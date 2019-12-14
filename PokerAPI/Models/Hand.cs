@@ -8,16 +8,15 @@ namespace PokerAPI.Models
     {
         public Hand()
         {
-            GetCards();
-            SortCards();
-            DetermineHand();
+            Cards = GetCards();
+            Name = DetermineHand();
             Timestamp = DateTime.Now;
         }
         public int Id { get; set; }
         public int PlayerId { get; set; }
         public string Name { get; set; }
         public DateTime Timestamp { get; set; }
-        public List<Card> Cards { get; set; }
+        public IEnumerable<Card> Cards { get; set; }
         private bool IsRoyalFlush => IsStraight && IsFlush && Cards.Last().Rank == 13;
         private bool IsStraightFlush => IsStraight && IsFlush;
         private bool IsQuads => FindMatchingCards(4);
@@ -30,41 +29,38 @@ namespace PokerAPI.Models
         private bool IsPair => DistinctRanks == 4;
         private int DistinctRanks => Cards.Select(c => c.Rank).Distinct().Count();
         private int DistinctSuits => Cards.Select(c => c.Suit).Distinct().Count();
-       
-        private void GetCards()
+
+        private List<Card> GetCards()
         {
-            int i = 0;
+            List <Card> cards = new List<Card>();
             Random rnd = new Random();
-            Cards = new List<Card>();
-            while (i < 5)
+            int cardCount = 0;
+            while (cardCount < 5)
             {
                 Card card = new Card() { Id = rnd.Next(0, 51) };
-                if (Cards.Find(c => c.Id == card.Id) == null)
+                if (!cards.Contains(card))
                 {
-                    Cards.Add(card);
-                    i++;
+                    cards.Add(card);
+                    cardCount++;
                 }
             }
+            return cards.OrderBy(c => c.Rank).ThenBy(c => c.Suit).ToList();
         }
 
-        private void SortCards()
+        private string DetermineHand()
         {
-            Cards = Cards.OrderBy(c => c.Rank).ThenBy(c => c.Suit).ToList();
-        }
-
-        private void DetermineHand()
-        {
-            Name = "High Card";
-            if (IsRoyalFlush) { Name = "Royal Flush"; }
-            if (IsStraightFlush) { Name = "Straight Flush"; }
-            if (IsQuads) { Name = "Quads"; }
-            if (IsFullHouse) { Name = "Full House"; }
-            if (IsFlush) { Name = "Flush"; }
-            if (IsStraight) { Name = "Straight"; }
-            if (IsStraightAceLow) { Name = "Straight, Ace Low"; }
-            if (IsTrips) { Name = "Trips"; }
-            if (IsTwoPair) { Name = "Two Pair"; }
-            if (IsPair) { Name = "Pair"; }
+            string name = "High Card";
+            if (IsRoyalFlush) { name = "Royal Flush"; }
+            if (IsStraightFlush) { name = "Straight Flush"; }
+            if (IsQuads) { name = "Quads"; }
+            if (IsFullHouse) { name = "Full House"; }
+            if (IsFlush) { name = "Flush"; }
+            if (IsStraight) { name = "Straight"; }
+            if (IsStraightAceLow) { name = "Straight, Ace Low"; }
+            if (IsTrips) { name = "Trips"; }
+            if (IsTwoPair) { name = "Two Pair"; }
+            if (IsPair) { name = "Pair"; }
+            return name;
         }
         private bool FindMatchingCards(int n)
         {
@@ -72,7 +68,7 @@ namespace PokerAPI.Models
             int i = 0, targetIndex = 5 - n;
             while (!found && i <= targetIndex)
             {
-                found = Instances(Cards[i++].Rank) == n;
+                found = Instances(Cards.ToList()[i++].Rank) == n;
             }
             return found;
         }

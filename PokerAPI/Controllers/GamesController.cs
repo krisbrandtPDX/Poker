@@ -15,7 +15,7 @@ namespace PokerAPI.Controllers
 
         // GET: api/Games
         [HttpGet]
-        public Game GetNew()
+        public Game Get()
         {
             Game game = new Game();
             game.Players = _context.Players;

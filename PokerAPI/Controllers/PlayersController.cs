@@ -20,9 +20,9 @@ namespace PokerAPI.Controllers
         }
         // GET: api/Players
         [HttpGet]
-        public IEnumerable<Player> Get()
+        public Player GetNew()
         {
-            return _context.Players;
+            return new Player();
         }
 
         // GET: api/Players/5
@@ -30,6 +30,7 @@ namespace PokerAPI.Controllers
         public Player Get(int id)
         {
             Player player = _context.Players.Find(id);
+            player.Hands = _context.Hands.Where(h => h.PlayerId == id).ToList();
             return player;
         }
 

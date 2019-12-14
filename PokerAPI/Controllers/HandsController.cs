@@ -21,16 +21,9 @@ namespace PokerAPI.Controllers
 
         // GET: api/Hands
         [HttpGet]
-        public Hand GetRandom()
+        public Hand GetNew()
         {
             return new Hand();
-        }
-
-        // GET: api/Hands/5
-        [HttpGet("{PlayerId}")]
-        public IEnumerable<Hand> Get(int playerId)
-        {
-            return _context.Hands.Where(h => h.PlayerId == playerId).ToArray();
         }
 
         // POST: api/Hands

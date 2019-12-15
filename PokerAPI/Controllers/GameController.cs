@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PokerAPI.Models;
+using PokerAPI.ViewModels;
 
 namespace PokerAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GamesController : ControllerBase
+    public class GameController : ControllerBase
     {
         private readonly PokerAPIContext _context;
-        public GamesController(PokerAPIContext context)
+
+        public GameController(PokerAPIContext context)
         {
             _context = context;
         }
-
-        // GET: api/Games
+        // GET: api/Game
         [HttpGet]
         public Game Get()
         {

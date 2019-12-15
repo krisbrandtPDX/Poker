@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokerAPI.Models;
+using System.Collections.Generic;
 
 namespace PokerAPI.Controllers
 {
@@ -20,18 +16,16 @@ namespace PokerAPI.Controllers
         }
         // GET: api/Players
         [HttpGet]
-        public Player GetNew()
+        public IEnumerable<Player> Get()
         {
-            return new Player();
+            return _context.Players;
         }
 
         // GET: api/Players/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public Player Get(int id)
         {
-            Player player = _context.Players.Find(id);
-            player.Hands = _context.Hands.Where(h => h.PlayerId == id).ToList();
-            return player;
+            return _context.Players.Find(id);
         }
 
         // POST: api/Players
@@ -42,24 +36,6 @@ namespace PokerAPI.Controllers
             _context.SaveChanges();
         }
 
-        // PUT: api/Players/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Player player)
-        {
-            if (id == player.Id)
-            {
-                _context.Entry(player).State = EntityState.Modified;
-                _context.SaveChanges();
-            }
-        }
-
-        // DELETE: api/Players/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            Player player = _context.Players.Find(id);
-            _context.Players.Remove(player);
-            _context.SaveChanges();
-        }
+       
     }
 }

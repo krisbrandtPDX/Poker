@@ -1,9 +1,8 @@
-﻿using System.Net.Http;
-using PokerConsole.Models;
+﻿using PokerConsole.Models;
 using System.Linq;
-using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace PokerConsole
@@ -14,72 +13,91 @@ namespace PokerConsole
         static async Task Main(string[] args)
         {
             UI.Notify("Hello and welcome to the poker game");
-            MainMenu(await Login());
+            Game game = await GetGame();
+            Login(game);
         }
 
-        static async Task<int> Login()
+
+        private static async Task Login(Game game)
         {
-            Game game = new Game();
-            Player player = new Player();
-            string Uri = "https://localhost:44308/api/Players/1";
-            string json = await client.GetStringAsync(Uri);
-            player = JsonSerializer.Deserialize<Player>(json);
-            return player.Id;
-        }
-        //private static async Task<string> Login()
-        //{
-        //    Task<string> json = await client.GetStringAsync(Uri);
-        //    List<Player> players = new List<Player>();
-        //    if (json != "")
-        //    {
-        //        players = JsonSerializer.Deserialize<Player>(json); ;
-        //    }
-        //    string prompt = "Enter player name to login: ";
-        //    string playerName = UI.Prompt(prompt);
+            string prompt = "Enter player name to login: ";
+            string playerName = UI.Prompt(prompt);
 
-        //    //while (playerName != "")
-        //    //{
-        //    //    if (players.Where(p => p.Name == playerName).Count() == 0)
-        //    //    {
-        //    //        if (UI.Prompt("User not found, create now? <Y>/N ", "Y") == "Y")
-        //    //        {
-        //    //            user = new User() { Name = userName };
-        //    //            ledger.Users.Add(user);
-        //    //            UI.Notify("User created successfully.");
-        //    //        }
-        //    //    }
-
-        //    //    if (user != null)
-        //    //    {
-        //    //        user = UpdateAccounts(user);
-        //    //    }
-        //    //    playerName = UI.Prompt(prompt);
-        //    //}
-        //    return playerName;
-        //}
-        private static void MainMenu(int playerId)
-        {
-            string prompt = "Select option - <D>:Deal <S>:Save Game <Q>:Quit";
-            string menuChoice = UI.Prompt(prompt, "D");
-
-            while (menuChoice != "Q")
+            var player = game.Players.Where(p => p.Name == playerName).FirstOrDefault();
+            if (player == null)
             {
-                switch (menuChoice)
+                if (UI.Prompt("Player not found, create now? <Y>/N ", "Y") == "Y")
                 {
-                    case "D":
-                        //call api to get new hand
-                        //increment player score
-                        break;
-                    case "S":
-                        //prompt for login
-                        //put or post player
-                        break;
-                    default:
-                        menuChoice = "Q";
-                        break;
+                    UI.Notify("Player posted to db.");
+                    await PostPlayer(playerName);
+                    game = await GetGame();
+                    await Login(game);
                 }
-                menuChoice = UI.Prompt(prompt, "D");
             }
+
+            UI.Prompt(string.Format("Welcome, {0:G}", player.Name));
         }
+
+        static async Task<Game> GetGame()
+        {
+            string Uri = "https://localhost:44308/api/Game";
+            string json = await client.GetStringAsync(Uri);
+            return JsonSerializer.Deserialize<Game>(json);
+        }
+        static async Task PostPlayer(string Name)
+        {
+            string Uri = "https://localhost:44308/api/Players";
+            var content = new StringContent(Name, Encoding.UTF8, "application/json");
+            await client.PostAsync(Uri, content);
+        }
+
+        //private static void PlayGame(Player player)
+        //{
+        //    UI.Notify("Welcome, " + player.Name + "!");
+        //    string prompt = "Select option - <ENTER>:Deal <S>:Player Stats <Q>:Quit";
+        //    string menuChoice = UI.Prompt(prompt, "D");
+
+        //    while (menuChoice != "Q")
+        //    {
+        //        switch (menuChoice)
+        //        {
+        //            case "D":
+        //                //var cards = await Deal();
+        //                //UI.Notify(hand.Name);
+        //                //increment player score
+        //                break;
+        //            case "S":
+        //                Statistics(player);
+        //                break;
+        //            default:
+        //                menuChoice = "Q";
+        //                break;
+        //        }
+        //        menuChoice = UI.Prompt(prompt, "D");
+        //    }
+        //}
+        //static async Task<Hands> GetHands(int playerId)
+        //{
+        //    string Uri = "https://localhost:44308/api/Hands/" + playerId;
+        //    string json = await client.GetStringAsync(Uri);
+        //    return JsonSerializer.Deserialize<Hands>(json);
+        //}
+
+        //private static void Statistics(Player player)
+        //{
+        //    var hands = GetHands(player.Id);
+        //    UI.Notify("Total Hands Played:");
+        //}
+
+        //    return JsonSerializer.Deserialize<Game>(json);
+        //}
+        //static async Task<Cards> Deal()
+        //{
+        //    string Uri = "https://localhost:44308/api/Hands";
+        //    string json = await client.GetStringAsync(Uri);
+        //    return JsonSerializer.Deserialize<Hand>(json);
+        //
+
     }
 }
+

@@ -1,38 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PokerAPI.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PokerAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HandsController : ControllerBase
+    public class CardsController : ControllerBase
     {
         private readonly PokerAPIContext _context;
-        public HandsController(PokerAPIContext context)
+
+        public CardsController(PokerAPIContext context)
         {
             _context = context;
         }
 
-        // GET: api/Hands
+        // GET: api/Cards
         [HttpGet]
-        public IEnumerable<Hand> Get()
+        public IEnumerable<Card> Get()
         {
-            return _context.Hands;
+            return _context.Cards;
         }
-        // GET: api/Hands/5
+        // GET: api/Cards/5
         [HttpGet("{Id}")]
-        public Hand Get(int Id)
+        public Card Get(int Id)
         {
-            return _context.Hands.Find(Id);
+            return  _context.Cards.Find(Id);
         }
-        
+
         // POST: api/Hands
         [HttpPost]
-        public void Post([FromBody] List<Hand> hands)
+        public void Post([FromBody] List<Card> cards)
         {
-            _context.Add(hands);
+            _context.Add(cards);
             _context.SaveChanges();
         }
     }

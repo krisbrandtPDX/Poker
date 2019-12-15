@@ -17,5 +17,6 @@ namespace PokerAPI.Models
         public DbSet<PokerAPI.Models.Player> Players { get; set; }
 
         public DbSet<PokerAPI.Models.Hand> Hands { get; set; }
+        public DbSet<PokerAPI.Models.Card> Cards { get; set; }
     }
 }

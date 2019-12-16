@@ -29,12 +29,6 @@ namespace PokerAPI.Controllers
             return new HandService(_context).GetHand(Id);
         }
 
-        // GET: api/Hands/5/GetCards
-        [HttpGet("{playerId}")]
-        public IEnumerable<Hand> GetCards(int handId)
-        {
-            return new HandService(_context).GetHands(handId);
-        }
         // POST: api/Hands
         [HttpPost]
         public void Post([FromBody] List<Entities.Hand> hands)

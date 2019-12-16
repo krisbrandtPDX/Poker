@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using PokerAPI.Models;
+using PokerAPI.Data;
 
 namespace PokerAPI
 {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using PokerAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace PokerAPI.Models
+namespace PokerAPI.Data
 {
     public class PokerAPIContext : DbContext
     {
@@ -14,9 +9,9 @@ namespace PokerAPI.Models
         {
         }
 
-        public DbSet<PokerAPI.Models.Player> Players { get; set; }
+        public DbSet<Entities.Player> Players { get; set; }
 
-        public DbSet<PokerAPI.Models.Hand> Hands { get; set; }
-        public DbSet<PokerAPI.Models.Card> Cards { get; set; }
+        public DbSet<Entities.Hand> Hands { get; set; }
+        public DbSet<Entities.Card> Cards { get; set; }
     }
 }

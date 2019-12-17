@@ -1,4 +1,4 @@
-﻿namespace PokerAPI.Entities
+﻿namespace PokerService.Models
 {
     public class Card
     {

@@ -1,5 +1,4 @@
-﻿using PokerConsole.Models;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;

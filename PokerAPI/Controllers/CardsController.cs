@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PokerAPI.Data;
 using PokerAPI.Models;
 using System.Collections.Generic;
 
@@ -17,22 +16,24 @@ namespace PokerAPI.Controllers
 
         // GET: api/Cards
         [HttpGet]
-        public IEnumerable<Entities.Card> Get()
+        public IEnumerable<Card> Get()
         {
-            return new CardService(_context).GetCards();
+            return _context.Cards;
         }
         // GET: api/Cards/5
         [HttpGet("{Id}")]
         public Card Get(int Id)
         {
-            return new CardService(_context).GetCard(Id);
+            return new Card() { CardId = Id };
         }
 
         // POST: api/Cards
         [HttpPost]
-        public void Post([FromBody] List<Entities.Card> cards)
+        public void Post([FromBody] int cardId, int handId)
         {
-            new CardService(_context).PostCards(cards);
+            Card c = new Card() { CardId = cardId, HandId = handId };
+            _context.Cards.Add(c);
+            _context.SaveChanges();
         }
     }
 }

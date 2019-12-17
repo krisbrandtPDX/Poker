@@ -9,6 +9,8 @@ namespace PokerAPI.Models
             Hands = new List<Hand>();
         }
 
+        public int Id { get; set; }
+        public string Name { get; set; }
         public List<Hand> Hands { get; set; }
     }
 }

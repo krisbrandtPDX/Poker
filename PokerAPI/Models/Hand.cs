@@ -10,6 +10,9 @@ namespace PokerAPI.Models
         {
             Cards = new List<Card>();
         }
+        public int Id { get; set; }
+        public int PlayerId { get; set; }
+        public DateTime Timestamp { get; set; }
         public List<Card> Cards { get; set; }
 
         public string Name => DetermineHand();
@@ -30,16 +33,19 @@ namespace PokerAPI.Models
         private string DetermineHand()
         {
             string name = "High Card";
-            if (IsRoyalFlush) { name = "Royal Flush"; }
-            if (IsStraightFlush) { name = "Straight Flush"; }
-            if (IsQuads) { name = "Quads"; }
-            if (IsFullHouse) { name = "Full House"; }
-            if (IsFlush) { name = "Flush"; }
-            if (IsStraight) { name = "Straight"; }
-            if (IsStraightAceLow) { name = "Straight, Ace Low"; }
-            if (IsTrips) { name = "Trips"; }
-            if (IsTwoPair) { name = "Two Pair"; }
-            if (IsPair) { name = "Pair"; }
+            if (Cards.Count() == 5)
+            {
+                if (IsRoyalFlush) { name = "Royal Flush"; }
+                if (IsStraightFlush) { name = "Straight Flush"; }
+                if (IsQuads) { name = "Quads"; }
+                if (IsFullHouse) { name = "Full House"; }
+                if (IsFlush) { name = "Flush"; }
+                if (IsStraight) { name = "Straight"; }
+                if (IsStraightAceLow) { name = "Straight, Ace Low"; }
+                if (IsTrips) { name = "Trips"; }
+                if (IsTwoPair) { name = "Two Pair"; }
+                if (IsPair) { name = "Pair"; }
+            }
             return name;
         }
     }

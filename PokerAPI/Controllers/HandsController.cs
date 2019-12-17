@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PokerAPI.Data;
 using PokerAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace PokerAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -18,22 +17,26 @@ namespace PokerAPI.Controllers
 
         // GET: api/Hands
         [HttpGet]
-        public IEnumerable<Entities.Hand> Get()
+        public IEnumerable<Hand> Get()
         {
-            return new HandService(_context).GetHands();
+            return _context.Hands;
         }
         // GET: api/Hands/5
         [HttpGet("{Id}")]
         public Hand Get(int Id)
         {
-            return new HandService(_context).GetHand(Id);
+            Hand hand = _context.Hands.Find(Id);
+            hand.Cards = _context.Cards.Where(c => c.HandId == Id).ToList();
+            return hand;
         }
 
         // POST: api/Hands
         [HttpPost]
-        public void Post([FromBody] List<Entities.Hand> hands)
+        public void Post([FromBody] int playerId)
         {
-            new HandService(_context).PostHands(hands);
+            Hand hand = new Hand() { PlayerId = playerId, Timestamp = DateTime.Now };
+            _context.Hands.Add(hand);
+            _context.SaveChanges();
         }
     }
 }

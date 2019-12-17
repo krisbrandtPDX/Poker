@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokerAPI", "PokerAPI\PokerAPI.csproj", "{BAAEDF06-3E76-46C5-AB1F-7E5DA982F764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokerConsole", "PokerConsole\PokerConsole.csproj", "{08AA00DA-4F19-4033-80C2-01480CD79667}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokerConsole", "PokerConsole\PokerConsole.csproj", "{08AA00DA-4F19-4033-80C2-01480CD79667}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

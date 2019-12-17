@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace PokerAPI.Models
+namespace PokerService.Models
 {
-    public class PokerAPIContext : DbContext
+    public class PokerServiceContext : DbContext
     {
-        public PokerAPIContext (DbContextOptions<PokerAPIContext> options)
+        public PokerServiceContext(DbContextOptions<PokerServiceContext> options)
             : base(options)
         {
         }

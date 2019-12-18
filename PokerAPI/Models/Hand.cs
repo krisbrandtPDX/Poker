@@ -13,9 +13,9 @@ namespace PokerAPI.Models
         public int Id { get; set; }
         public int PlayerId { get; set; }
         public DateTime Timestamp { get; set; }
-        public List<Card> Cards { get; set; }
 
         public string Name => DetermineHand();
+        public List<Card> Cards { get; set; }
 
         private bool IsRoyalFlush => IsStraight && IsFlush && Cards.Last().Rank == 13;
         private bool IsStraightFlush => IsStraight && IsFlush;

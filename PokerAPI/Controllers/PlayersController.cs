@@ -36,9 +36,9 @@ namespace PokerAPI.Controllers
 
         // POST: api/Players
         [HttpPost]
-        public void Post([FromBody] string playerName)
+        public void Post(string name)
         {
-            _context.Players.Add(new Player() { Name = playerName });
+            _context.Players.Add(new Player() { Name = name });
             _context.SaveChanges();
         }
     }

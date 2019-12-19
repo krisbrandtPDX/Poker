@@ -32,21 +32,20 @@ namespace PokerAPI.Models
 
         private string DetermineHand()
         {
-            string name = "High Card";
             if (Cards.Count() == 5)
             {
-                if (IsRoyalFlush) { name = "Royal Flush"; }
-                if (IsStraightFlush) { name = "Straight Flush"; }
-                if (IsQuads) { name = "Quads"; }
-                if (IsFullHouse) { name = "Full House"; }
-                if (IsFlush) { name = "Flush"; }
-                if (IsStraight) { name = "Straight"; }
-                if (IsStraightAceLow) { name = "Straight, Ace Low"; }
-                if (IsTrips) { name = "Trips"; }
-                if (IsTwoPair) { name = "Two Pair"; }
-                if (IsPair) { name = "Pair"; }
+                if (IsRoyalFlush) { return "Royal Flush"; }
+                if (IsStraightFlush) { return "Straight Flush"; }
+                if (IsQuads) { return "Quads"; }
+                if (IsFullHouse) { return "Full House"; }
+                if (IsFlush) { return "Flush"; }
+                if (IsStraight) { return "Straight"; }
+                if (IsStraightAceLow) { return "Straight, Ace Low"; }
+                if (IsTrips) { return "Trips"; }
+                if (IsTwoPair) { return "Two Pair"; }
+                if (IsPair) { return "Pair"; }
             }
-            return name;
+            return "High Card";
         }
     }
 }

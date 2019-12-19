@@ -27,6 +27,17 @@ namespace PokerConsole.Models
             _handService = new HandService(_client);
             _cardService = new CardService(_client);
         }
+        public async Task Play()
+        {
+            Player player = await Login();
+            while (player != null)
+            {
+                UI.Notify(string.Format("Welcome, {0:G}", player.Name));
+                await MainMenu(player);
+                player = await Login();
+            }
+            UI.Notify(string.Format("Goodbye"));
+        }
 
         public async Task<Player> Login()
         {
@@ -47,23 +58,9 @@ namespace PokerConsole.Models
         }
 
 
-        public async Task Play()
+        public async Task MainMenu(Player player)
         {
-            Player player = await Login();
-
-            while(player != null)
-            {
-                UI.Notify(string.Format("Welcome, {0:G}", player.Name));
-                MainMenu(player);
-                UI.Notify(string.Format("Goodbye, {0:G}", player.Name));
-                player = await Login();
-            }
-            UI.Notify(string.Format("Goodbye"))  ;    
-        }
-
-        private void MainMenu(Player player)
-        {
-            string prompt = "Select option - <ENTER>:Deal <S>:Player Stats <Q>:Quit";
+            string prompt = "Select option - <ENTER>:Deal <H>:Hand History <<Q>:Quit";
             string menuChoice = UI.Prompt(prompt, "D");
 
             while (menuChoice != "Q")
@@ -71,7 +68,17 @@ namespace PokerConsole.Models
                 switch (menuChoice)
                 {
                     case "D":
-                        // 
+                        Hand hand = await _handService.Deal();
+                        hand.PlayerId = player.Id;
+                        await _handService.PostHand(hand);
+                        string display = "";
+                        foreach (Card c in hand.Cards)
+                        {
+                            //postCard(c.Id);
+                            Console.WriteLine((char)c.RankAscii);
+                            Console.WriteLine((char)c.SuitAscii);
+                        }
+                        UI.Notify(display);
                         break;
                     case "S":
                         //Statistics(player);
@@ -83,7 +90,8 @@ namespace PokerConsole.Models
                 menuChoice = UI.Prompt(prompt, "D");
             }
 
-
         }
+
+     
     }
 }

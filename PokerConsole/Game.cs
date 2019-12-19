@@ -40,7 +40,7 @@ namespace PokerConsole.Models
                 {
                     await _playerService.PostPlayer(playerName);
                     UI.Notify("Player posted.");
-                    await Login();
+                    player = await Login();
                 }
             }
             return player;
@@ -50,15 +50,19 @@ namespace PokerConsole.Models
         public async Task Play()
         {
             Player player = await Login();
-            UI.Notify(string.Format("Welcome, {0:G}", player.Name));
-            UI.Prompt("zzz...");
-            //await MainMenu(player);
-        
+
+            while(player != null)
+            {
+                UI.Notify(string.Format("Welcome, {0:G}", player.Name));
+                MainMenu(player);
+                UI.Notify(string.Format("Goodbye, {0:G}", player.Name));
+                player = await Login();
+            }
+            UI.Notify(string.Format("Goodbye"))  ;    
         }
 
-        private static void MainMenu(Player player)
+        private void MainMenu(Player player)
         {
-            UI.Notify(string.Format("Welcome, {0:G}", player.Name));
             string prompt = "Select option - <ENTER>:Deal <S>:Player Stats <Q>:Quit";
             string menuChoice = UI.Prompt(prompt, "D");
 
@@ -67,7 +71,7 @@ namespace PokerConsole.Models
                 switch (menuChoice)
                 {
                     case "D":
-                        //
+                        // 
                         break;
                     case "S":
                         //Statistics(player);

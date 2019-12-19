@@ -32,7 +32,7 @@ namespace PokerAPI.Controllers
 
         // POST: api/Hands
         [HttpPost]
-        public void Post([FromBody] int playerId)
+        public void Post(int playerId)
         {
             Hand hand = new Hand() { PlayerId = playerId, Timestamp = DateTime.Now };
             _context.Hands.Add(hand);

@@ -40,7 +40,7 @@ namespace PokerConsole
 
         public async Task PostPlayer(string name)
         {
-            var content = new StringContent(name, Encoding.UTF8, "application/json");
+            var content = new StringContent("");
             await _client.PostAsync("api/Players?name=" + name, content);
         }
 

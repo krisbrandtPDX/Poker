@@ -29,7 +29,7 @@ namespace PokerAPI.Controllers
 
         // POST: api/Cards
         [HttpPost]
-        public void Post([FromBody] int cardId, int handId)
+        public void Post(int cardId, int handId)
         {
             Card c = new Card() { CardId = cardId, HandId = handId };
             _context.Cards.Add(c);

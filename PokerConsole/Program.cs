@@ -18,7 +18,6 @@ namespace PokerConsole
         {
             UI.Notify("Hello and welcome to the poker game");
             Game game = new Game();
-            
             await game.Play();
         }
     }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PokerAPI.Models;
 using System;
-using System.Collections.Generic;
 
 namespace PokerAPI.Controllers
 {
@@ -15,12 +14,12 @@ namespace PokerAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Cards
-        [HttpGet]
+       // GET: api/Cards
+       [HttpGet]
         public Card Get()
         {
             Random rnd = new Random();
-            return new Card() { CardId = rnd.Next(0,51) };
+            return new Card() { CardId = rnd.Next(0, 51) };
         }
         // GET: api/Cards/5
         [HttpGet("{Id}")]

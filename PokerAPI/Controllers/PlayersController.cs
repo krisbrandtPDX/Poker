@@ -14,6 +14,7 @@ namespace PokerAPI.Controllers
         {
             _context = context;
         }
+
         // GET: api/Players
         [HttpGet]
         public IEnumerable<Player> Get()
@@ -27,7 +28,7 @@ namespace PokerAPI.Controllers
         {
             Player player = _context.Players.Find(Id);
             player.Hands = _context.Hands.Where(h => h.PlayerId == Id).ToList();
-            foreach(Hand h in player.Hands)
+            foreach (Hand h in player.Hands)
             {
                 h.Cards = _context.Cards.Where(c => c.HandId == h.Id).ToList();
             }

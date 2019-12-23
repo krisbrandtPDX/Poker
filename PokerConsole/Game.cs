@@ -14,18 +14,14 @@ namespace PokerConsole.Models
     public class Game
     {
         private readonly HttpClient _client;
-        private readonly PlayerService _playerService;
-        private readonly HandService _handService;
-        private readonly CardService _cardService;
+        private readonly PokerClient _pokerClient;
 
         public Game()
         {
             _client = new HttpClient();
             _client.BaseAddress = new Uri("https://localhost:44308/");
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
-            _playerService = new PlayerService(_client);
-            _handService = new HandService(_client);
-            _cardService = new CardService(_client);
+            _pokerClient = new PokerClient(_client);
         }
         public async Task Play()
         {
@@ -41,26 +37,29 @@ namespace PokerConsole.Models
 
         public async Task<Player> Login()
         {
-            var players = await _playerService.GetPlayers();
+            var players = await _pokerClient.GetPlayers();
             string playerName = UI.Prompt("Enter player name to login: ");
 
             var player = players.Where(p => p.Name == playerName).FirstOrDefault();
             if (player == null)
             {
-                if (UI.Prompt("Player not found, create now? <Y>/N ", "Y") == "Y")
+                if (playerName != "")
                 {
-                    await _playerService.PostPlayer(playerName);
-                    UI.Notify("Player posted.");
-                    player = await Login();
+                    if (UI.Prompt("Player not found, create now? <Y>/N ", "Y") == "Y")
+                    {
+                        await _pokerClient.PostPlayer(playerName);
+                        UI.Notify("Player posted.");
+                        player = await Login();
+                    }
                 }
             }
-            return player;
+            return await _pokerClient.GetPlayer(player.Id);
         }
 
 
         public async Task MainMenu(Player player)
         {
-            string prompt = "Select option - <ENTER>:Deal <H>:Hand History <<Q>:Quit";
+            string prompt = "Select option - <ENTER>:Deal <H>:Hand History <Q>:Quit";
             string menuChoice = UI.Prompt(prompt, "D");
 
             while (menuChoice != "Q")
@@ -68,15 +67,12 @@ namespace PokerConsole.Models
                 switch (menuChoice)
                 {
                     case "D":
-                        Hand hand = await _handService.Deal();
-                        hand.PlayerId = player.Id;
-                        await _handService.PostHand(hand);
+                        Hand hand = await _pokerClient.Deal();
+                        await _pokerClient.PostHand(hand);
                         string display = "";
                         foreach (Card c in hand.Cards)
                         {
-                            //postCard(c.Id);
-                            Console.WriteLine((char)c.RankAscii);
-                            Console.WriteLine((char)c.SuitAscii);
+                            display += c.ShortName + " ";
                         }
                         UI.Notify(display);
                         break;
@@ -92,6 +88,6 @@ namespace PokerConsole.Models
 
         }
 
-     
+
     }
 }

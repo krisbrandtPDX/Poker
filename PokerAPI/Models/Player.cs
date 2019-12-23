@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-
 namespace PokerAPI.Models
 {
     public class Player
@@ -8,9 +7,10 @@ namespace PokerAPI.Models
         {
             Hands = new List<Hand>();
         }
-
         public int Id { get; set; }
         public string Name { get; set; }
+
         public List<Hand> Hands { get; set; }
+
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using PokerAPI.Models;
 using System;
 using System.Linq;
+
 namespace PokerAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -30,7 +30,7 @@ namespace PokerAPI.Controllers
                 }
             }
             hand.Cards = hand.Cards.OrderBy(c => c.Rank).ThenBy(c => c.Suit).ToList();
-            hand.Timestamp = DateTime.UtcNow;
+            //hand.Timestamp = DateTime.Now;
             return hand;
         }
 
@@ -44,13 +44,13 @@ namespace PokerAPI.Controllers
             return hand;
         }
 
-        // POST: api/Hands
-        [HttpPost]
-        public void Post([FromBody] Hand hand)
+        // POST: api/Hands/5
+        [HttpPost("{PlayerId}")]
+        public void Post(int playerId, [FromBody] Hand hand)
         {
             hand.Timestamp = DateTime.UtcNow;
             _context.Hands.Add(hand);
-            foreach(Card c in hand.Cards)
+            foreach (Card c in hand.Cards)
             {
                 c.HandId = hand.Id;
                 _context.Cards.Add(c);

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace PokerConsole.Models
@@ -15,20 +13,10 @@ namespace PokerConsole.Models
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
+        [DataMember(Name = "timestamp")]
+        public string Timestamp { get; set; }
+
         [DataMember(Name = "cards")]
         public List<Card> Cards { get; set; }
-
-        //[DataMember(Name = "timestamp")]
-        //private string JsonTimestamp { get; set; }
-
-        //[IgnoreDataMember]
-        //public DateTime Timestamp
-        //{
-        //    get
-        //    {
-        //        return DateTime.ParseExact(JsonTimestamp, "yyyy-MM-ddTHH:mm:ss.fffffffZ", CultureInfo.InvariantCulture);
-        //    }
-        //}
-
     }
 }

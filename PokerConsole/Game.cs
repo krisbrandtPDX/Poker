@@ -68,7 +68,7 @@ namespace PokerConsole.Models
                 {
                     case "D":
                         Hand hand = await _pokerClient.Deal();
-                        await _pokerClient.PostHand(hand);
+                        await _pokerClient.PostHand(player.Id, hand);
                         string display = "";
                         foreach (Card c in hand.Cards)
                         {

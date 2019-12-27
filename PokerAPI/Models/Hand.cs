@@ -1,27 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace PokerAPI.Models
 {
     public class Hand
     {
+        private DateTime _timestamp;
         public Hand()
         {
+            _timestamp = DateTime.Now;
             Cards = new List<Card>();
         }
         public List<Card> Cards { get; set; }
 
-        [IgnoreDataMember]
         public int Id { get; set; }
-        [IgnoreDataMember]
         public int PlayerId { get; set; }
-        [IgnoreDataMember]
-        public DateTime Timestamp { get; set; }
+
+        public string Timestamp
+        {
+            get
+            {
+                return _timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ff");
+            }
+            set
+            {
+                _timestamp = DateTime.ParseExact(Timestamp, "yyyy-MM-ddTHH:mm:ss.ff", CultureInfo.InvariantCulture);
+            }
+        }
 
         public string Name => DetermineHand();
-      
+
         private bool IsRoyalFlush => IsStraight && IsFlush && Cards.Last().Rank == 13;
         private bool IsStraightFlush => IsStraight && IsFlush;
         private bool IsQuads => Cards[0].Rank == Cards[3].Rank || Cards[1].Rank == Cards[4].Rank;

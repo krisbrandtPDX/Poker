@@ -49,11 +49,11 @@ namespace PokerConsole
             return hand;
         }
 
-        public async Task PostHand(Hand hand)
+        public async Task PostHand(int playerId, Hand hand)
         {
             var json = JsonSerializer.Serialize(hand);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            await _client.PostAsync("api/Hands", content);
+            await _client.PostAsync("api/Hands/" + playerId, content);
         }
 
     }

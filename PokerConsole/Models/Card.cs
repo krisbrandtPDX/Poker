@@ -11,7 +11,9 @@ namespace PokerConsole.Models
         public Card()
         {
         }
-       
+        [DataMember(Name = "cardId")]
+        public int CardId { get; set; }
+
         [DataMember(Name = "rank")]
         public int Rank { get; set; }
         [DataMember(Name = "suit")]

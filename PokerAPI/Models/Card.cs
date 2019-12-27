@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace PokerAPI.Models
+﻿namespace PokerAPI.Models
 {
     public class Card
     {
@@ -10,9 +8,8 @@ namespace PokerAPI.Models
         private string[] _suits = new string[4] { "Hearts", "Clubs", "Diamonds", "Spades" };
         private string[] _ranks = new string[13] { "Two", "Three", "Four", "Five","Six", "Seven", "Eight" ,"Nine", "Ten", "Jack", "Queen", "King", "Ace"};
 
-        [IgnoreDataMember]
         public int CardId { get; set; }
-        [IgnoreDataMember]
+
         public int HandId { get; set; }
         public int Rank => CardId % 13;
         public int Suit => CardId / 13;

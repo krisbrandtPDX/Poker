@@ -20,9 +20,9 @@ namespace PokerAPI.Controllers
         public Hand Get()
         {
             Hand hand = new Hand();
+            Random rnd = new Random();
             while (hand.Cards.Count() < 5)
             {
-                Random rnd = new Random();
                 Card card = new Card() { CardId = rnd.Next(0, 51) };
                 if (hand.Cards.Where(c => c.CardId == card.CardId).Count() == 0)
                 {
@@ -30,7 +30,6 @@ namespace PokerAPI.Controllers
                 }
             }
             hand.Cards = hand.Cards.OrderBy(c => c.Rank).ThenBy(c => c.Suit).ToList();
-            //hand.Timestamp = DateTime.Now;
             return hand;
         }
 
@@ -48,7 +47,7 @@ namespace PokerAPI.Controllers
         [HttpPost("{PlayerId}")]
         public void Post(int playerId, [FromBody] Hand hand)
         {
-            hand.Timestamp = DateTime.UtcNow;
+            hand.PlayerId = playerId ;
             _context.Hands.Add(hand);
             foreach (Card c in hand.Cards)
             {

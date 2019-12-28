@@ -7,29 +7,15 @@ namespace PokerAPI.Models
 {
     public class Hand
     {
-        private DateTime _timestamp;
         public Hand()
         {
-            _timestamp = DateTime.Now;
             Cards = new List<Card>();
         }
         public List<Card> Cards { get; set; }
 
         public int Id { get; set; }
         public int PlayerId { get; set; }
-
-        public string Timestamp
-        {
-            get
-            {
-                return _timestamp.ToString("yyyy-MM-ddTHH:mm:ss.ff");
-            }
-            set
-            {
-                _timestamp = DateTime.ParseExact(Timestamp, "yyyy-MM-ddTHH:mm:ss.ff", CultureInfo.InvariantCulture);
-            }
-        }
-
+        public string Timestamp { get; set; }
         public string Name => DetermineHand();
 
         private bool IsRoyalFlush => IsStraight && IsFlush && Cards.Last().Rank == 13;

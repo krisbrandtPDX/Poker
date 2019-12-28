@@ -1,12 +1,6 @@
-﻿using Amazon.Runtime;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace PokerConsole.Models
@@ -40,22 +34,28 @@ namespace PokerConsole.Models
             var players = await _pokerClient.GetPlayers();
             string playerName = UI.Prompt("Enter player name to login: ");
 
-            var player = players.Where(p => p.Name == playerName).FirstOrDefault();
-            if (player == null)
+            if (playerName != "")
             {
-                if (playerName != "")
+                var player = players.Where(p => p.Name == playerName).FirstOrDefault();
+                if (player == null)
                 {
-                    if (UI.Prompt("Player not found, create now? <Y>/N ", "Y") == "Y")
-                    {
-                        await _pokerClient.PostPlayer(playerName);
-                        UI.Notify("Player posted.");
-                        player = await Login();
-                    }
+                    return await CreateNewPlayer(playerName);
                 }
+                return await _pokerClient.GetPlayer(player.Id);
             }
-            return await _pokerClient.GetPlayer(player.Id);
+            return null;
         }
 
+        public async Task<Player> CreateNewPlayer(string playerName)
+        {
+            if (UI.Prompt("Player not found, create now? <Y>/N ", "Y") == "Y")
+            {
+                await _pokerClient.PostPlayer(playerName);
+                UI.Notify("Player posted.");
+                return new Player() { Name = playerName };
+            }
+            return null;
+        }
 
         public async Task MainMenu(Player player)
         {
@@ -69,15 +69,14 @@ namespace PokerConsole.Models
                     case "D":
                         Hand hand = await _pokerClient.Deal();
                         await _pokerClient.PostHand(player.Id, hand);
-                        string display = "";
-                        foreach (Card c in hand.Cards)
-                        {
-                            display += c.ShortName + " ";
-                        }
-                        UI.Notify(display);
+                        player.Hands.Add(hand);
+                        UI.DisplayHand(hand);
                         break;
-                    case "S":
-                        //Statistics(player);
+                    case "H":
+                        foreach (Hand h in player.Hands.OrderByDescending(h => h.Timestamp))
+                        {
+                            UI.DisplayHand(h);
+                        }
                         break;
                     default:
                         menuChoice = "Q";

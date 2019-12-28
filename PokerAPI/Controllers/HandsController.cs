@@ -30,6 +30,7 @@ namespace PokerAPI.Controllers
                 }
             }
             hand.Cards = hand.Cards.OrderBy(c => c.Rank).ThenBy(c => c.Suit).ToList();
+            hand.Timestamp = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.ff");
             return hand;
         }
 
